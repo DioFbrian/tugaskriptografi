@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HashingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('hashing');
 });
 Route::get('/home', [App\Http\Controllers\HashingController::class, 'index'])->name('home');
+Route::post('/home/hashing', [App\Http\Controllers\HashingController::class, 'generate'])->name('hashing');
+Route::post('/home/verify', [App\Http\Controllers\HashingController::class, 'verify'])->name('verify');
+
