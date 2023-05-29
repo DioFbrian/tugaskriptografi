@@ -10,7 +10,7 @@
 </head>
 <body>
 {{-- NAV BAR --}}
-    <nav class="navbar" style="justify-content:flex-start; background-color:#A10000 ; padding: 15px 25px;">
+    <nav class="navbar bg-primary" style="justify-content:flex-start;">
         <div class="container-fluid">
             <a class="navbar-brand" >
                 <img src="{{ asset('JOOS-TRANS1.png') }}" alt="Logo" width="70" height="50" class="d-inline-block align-text-top">
@@ -20,11 +20,11 @@
     </nav>
 {{-- NAVBAR END --}}
 <div class="main-container">
-    <section class=" space--sm" style="background-color: #7319B3">
+    <section class=" space--sm" >
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-12">
-                        <div class="boxed boxed--border"  style="background-color: #006545">
+                        <div class="boxed boxed--border"  style="background-color: #A10000">
                             <form id="generate_form" method="POST" action="/home/hashing">
                                 @csrf
                                 <h2 class="pt-5 text-center text-white">JOSS Hash Generator</h2>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="row justify-content-between" id="bcrypt-hash-validator-verifier">
                     <div class="col-12">
-                        <div class="boxed boxed--border pt-5" style="background-color: crimson; height:30em">
+                        <div class="boxed boxed--border pt-5" style="background-color:  #A10000; height:30em">
                             <h2 class="text-center text-white">JOSS Hash Verifier</h2>
 
                             <form id="verifier_form" method="POST" action="/home/verify">
@@ -147,10 +147,10 @@
         </section>
     </div>
 </body>
-<footer class="pt-4"  style="background-color: grey;">
+<footer class="pt-4 bg-primary">
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col" style="color: white">
                 <h4>Tentang Kami</h4>
                 <p>Kami adalah membuat project kriptografi ini dengan penuh semangat dan suka cita :) </p>
             </div>
