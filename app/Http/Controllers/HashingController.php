@@ -15,11 +15,19 @@ class HashingController extends Controller
     public function generate(Request $request)
     {
 
-        $password = $request->input('plain_text');
-        $hashedPassword = bcrypt($password, [
-            'rounds' => $request->input('cost_factor')
-        ]);
+        // $password = $request->input('plain_text');
+        // $hashedPassword = bcrypt($password, [
+        //     'rounds' => $request->input('cost_factor')
+        // ]);
+        $config = config('hashing.bcrypt');
+        $config['rounds'] = $request->input('cost_factor');
 
+        // Set konfigurasi cost factor
+        config(['hashing.bcrypt' => $config]);
+
+        // Hashing kata sandi dengan cost factor yang ditentukan
+        $password = $request->input('plain_text');
+        $hashedPassword = bcrypt($password);
         return view('hashing', ['password' => $password, 'hashedPassword' => $hashedPassword]);
     }
 

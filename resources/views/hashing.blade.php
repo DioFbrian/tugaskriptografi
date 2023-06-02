@@ -13,9 +13,9 @@
     <nav class="navbar bg-primary" style="justify-content:flex-start;">
         <div class="container-fluid">
             <a class="navbar-brand" >
-                <img src="{{ asset('JOOS-TRANS1.png') }}" alt="Logo" width="70" height="50" class="d-inline-block align-text-top">
+                <img src="{{ asset('JOOS-TRANS1.png') }}" alt="Logo" width="115" height="70" class="d-inline-block align-text-top">
             </a>
-            <h5 style="color:azure">JOSS Decrypt</h5>
+            <h5 style="margin-right: 10px; color:azure">JOSS Decrypt</h5>
         </div>
     </nav>
 {{-- NAVBAR END --}}
@@ -32,7 +32,7 @@
                                     <div class="row mb-3">
                                         <div class="col-12">
                                             <label for="plain_text" class="h5 mb-2 text-white">Plain Text Input</label>
-                                            <input type="text" id="plain_text" name="plain_text" class="mb-2 form-control form-control-lg" @if(isset($password))value="{{ $password }}"@endif autofocus required />
+                                            <input type="text" id="plain_text" name="plain_text" class="mb-2 form-control form-control-lg" placeholder="String" @if(isset($password))value="{{ $password }}"@endif autofocus required />
                                         </div>
                                     </div>
                                     <div class="row mb-2">
@@ -46,9 +46,9 @@
                                                     <option value="7">7</option>
                                                     <option value="8">8</option>
                                                     <option value="9">9</option>
-                                                    <option value="10" selected>10</option>
+                                                    <option value="10">10</option>
                                                     <option value="11">11</option>
-                                                    <option value="12">12</option>
+                                                    <option value="12" selected>12</option>
                                                     <option value="13">13</option>
                                                     <option value="14">14</option>
                                                     <option value="15">15</option>
@@ -67,10 +67,10 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-8">
-                                            <input type="submit" class="mb-2 ms-3  btn btn-primary btn-md" style="width: 100%" value="GENERATE HASH">
+                                            <input type="submit" class="mb-2 ms-3  btn btn-primary btn-md btn-block" style="width: 100%" value="GENERATE HASH">
                                         </div>
                                         <div class="col-sm-4">
-                                            <a href="/home" type="button" class="ms-4 btn btn-outline-light" style="width: 80%">RESET FORM</a>
+                                            <a href="/home" type="button" class="ms-4 btn btn-outline-light " style="width: 80%">RESET FORM</a>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -78,14 +78,13 @@
                                             <hr>
                                             <div class="row">
                                                 <div class="col-12 mb-5">
-                                                    <p class="h5 mb-2 text-white">
-                                                        Output
-                                                    </p>
+                                                    <p class="h5 mb-2 text-white">Output</p>
                                                     @if(isset($hashedPassword))
                                                     <div class="form-control alert alert-success mt-3" role="alert">
+                                                        <input type="text" id="hashed_password" name="hashed_password" value="{{ $hashedPassword }}" hidden>
                                                         {{ $hashedPassword }}
                                                     </div>
-                                                    <button type="button" class="btn btn-md btn-primary copy-button" data-clipboard-text="{{ $hashedPassword }}"><i class="fas fa-copy"> Copy To Clipboard</i></button>
+                                                    <button type="button" class="btn btn-md btn-primary copy-button" onclick="copyData()"><i class="fas fa-copy"></i> Copy To Verify Hash</button>
                                                     @endif
                                                 </div>
                                             </div>
@@ -106,28 +105,40 @@
                                 <div class="container-fluid">
                                     <div class="row mb-5">
                                         <div class="col">
-                                            <label for="verify_plain_text" class="text-white h5 mb-2">Plain Text</label>
-                                            <input type="text" id="verify_plain_text" name="verify_plain_text" class="form-control form-control-lg" @if(isset($verify_plain_text))value="{{ $verify_plain_text }}"@endif required /> 
+                                            <label for="verify_hash" class="text-white h5 mb-2">Hash</label>
+                                            <input type="text" id="verify_hash" name="verify_hash" class="form-control form-control-lg" placeholder="Hash To Check" @if(isset($verify_hash))value="{{ $verify_hash }}"@endif autofocus required />
                                         </div>
                                     </div>
-
                                     <div class="row mb-5">
                                         <div class="col">
-                                            <label for="verify_hash" class="text-white h5 mb-2">Hash</label>
-                                            <input type="text" id="verify_hash" name="verify_hash" class="form-control form-control-lg" @if(isset($verify_hash))value="{{ $verify_hash }}"@endif autofocus required />
+                                            <label for="verify_plain_text" class="text-white h5 mb-2">Plain Text</label>
+                                            <input type="text" id="verify_plain_text" name="verify_plain_text" class="form-control form-control-lg" placeholder="String To Check Against" @if(isset($verify_plain_text))value="{{ $verify_plain_text }}"@endif required /> 
                                         </div>
                                     </div>
                                     @if(isset($verification))
-                                        <div class="mt-3">
-                                            @if($verification === 'valid')
-                                                <div class="alert alert-success" role="alert">
-                                                    Verification success
+                                        <div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="verificationModalLabel">Verification Result</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @if($verification === 'valid')
+                                                            <div class="alert alert-success" role="alert">
+                                                                Match !!!
+                                                            </div>
+                                                        @else
+                                                            <div class="alert alert-danger" role="alert">
+                                                                Not a match !!!!!!!
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
                                                 </div>
-                                            @else
-                                                <div class="alert alert-danger" role="alert">
-                                                    Verification failed
-                                                </div>
-                                            @endif
+                                            </div>
                                         </div>
                                     @endif
                                     <div class="row">
@@ -150,9 +161,8 @@
 <footer class="pt-4 bg-primary">
     <div class="container">
         <div class="row">
-            <div class="col" style="color: white">
-                <h4>Tentang Kami</h4>
-                <p>Kami adalah membuat project kriptografi ini dengan penuh semangat dan suka cita :) </p>
+            <div class="col text-center" style="color: white">
+                <h6>© Copyright Team JOOS 2023</h6>
             </div>
         </div>
     </div>
@@ -163,14 +173,18 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 <script>
-    var clipboard = new ClipboardJS('.copy-button');
+    function copyData() {
+        var plaintText = document.getElementById("plain_text").value;
+        var hashedPassword = document.getElementById("hashed_password").value;
 
-    clipboard.on('success', function(e) {
-        alert('Text berhasil disalin!');
-    });
-
-    clipboard.on('error', function(e) {
-        alert('Gagal menyalin text. Silakan coba lagi.');
+        document.getElementById("verify_plain_text").value = plaintText;
+        document.getElementById("verify_hash").value = hashedPassword;
+    }
+</script>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        var verificationModal = new bootstrap.Modal(document.getElementById('verificationModal'));
+        verificationModal.show();
     });
 </script>
 </html>
