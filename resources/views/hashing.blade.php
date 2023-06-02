@@ -75,11 +75,10 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <hr>
                                             <div class="row">
                                                 <div class="col-12 mb-5">
-                                                    <p class="h5 mb-2 text-white">Output</p>
                                                     @if(isset($hashedPassword))
+                                                    <p class="h5 mb-2 text-white">Output</p>
                                                     <div class="form-control alert alert-success mt-3" role="alert">
                                                         <input type="text" id="hashed_password" name="hashed_password" value="{{ $hashedPassword }}" hidden>
                                                         {{ $hashedPassword }}
@@ -98,8 +97,8 @@
                 <div class="row justify-content-between" id="bcrypt-hash-validator-verifier">
                     <div class="col-12">
                         <div class="boxed boxed--border pt-5" style="background-color:  #A10000; height:30em">
+                            <hr>
                             <h2 class="text-center text-white">JOSS Hash Verifier</h2>
-
                             <form id="verifier_form" method="POST" action="/home/verify">
                                 @csrf
                                 <div class="container-fluid">
